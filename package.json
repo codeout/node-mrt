@@ -1,0 +1,32 @@
+{
+  "name": "node-mrt",
+  "description": "MRT archive downloader for NodeJS",
+  "version": "0.1.0",
+  "author": "Shintaro Kojima <goodies@codeout.net>",
+  "license": "MIT",
+  "keywords": [
+    "bgpdump",
+    "bgpdump2",
+    "mrt",
+    "bgp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/codeout/node-mrt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codeout/node-mrt/issues"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "scoped-http-client": "^0.11.0",
+    "tmp": "0.0.28"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.10.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "coffee -o . -c src/index.coffee"
+  }
+}
