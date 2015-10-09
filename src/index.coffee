@@ -32,28 +32,28 @@ class MRT
       $ = Parser.load(body)
       callback url + $('a').last().attr('href')
 
-  get: (errorHandler, callback) ->
+  get: (messageHandler, callback) ->
     timeout = process.env.MRT_CACHE_TIMEOUT || 86400000  # 1 day
     if @cache.date && new Date() - @cache['date'] < timeout
       callback @cache.path
       return
 
-    errorHandler "Fresh MRT is not found"
-    @lastFileUrl errorHandler, (url) =>
-      errorHandler "Downloading #{url} ... please wait"
+    messageHandler "Fresh MRT is not found"
+    @lastFileUrl messageHandler, (url) =>
+      messageHandler "Downloading #{url} ... please wait"
 
       HttpClient.create(url, encoding: 'binary').get() (err, res, body) =>
         if err
-          errorHandler err
+          messageHandler err
           return
         if res.statusCode != 200
-          errorHandler "Bad HTTP response: #{res.statusCode}"
+          messageHandler "Bad HTTP response: #{res.statusCode}"
           return
 
-        @write body, url, errorHandler, (path) =>
+        @write body, url, messageHandler, (path) =>
           @cache.date = new Date()
           @cache.path = path
-          errorHandler "Saved as #{path}"
+          messageHandler "Saved as #{path}"
           callback path
 
   write: (content, url, errorHandler, callback) ->

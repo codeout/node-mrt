@@ -42,32 +42,32 @@
       });
     };
 
-    MRT.prototype.get = function(errorHandler, callback) {
+    MRT.prototype.get = function(messageHandler, callback) {
       var timeout;
       timeout = process.env.MRT_CACHE_TIMEOUT || 86400000;
       if (this.cache.date && new Date() - this.cache['date'] < timeout) {
         callback(this.cache.path);
         return;
       }
-      errorHandler("Fresh MRT is not found");
-      return this.lastFileUrl(errorHandler, (function(_this) {
+      messageHandler("Fresh MRT is not found");
+      return this.lastFileUrl(messageHandler, (function(_this) {
         return function(url) {
-          errorHandler("Downloading " + url + " ... please wait");
+          messageHandler("Downloading " + url + " ... please wait");
           return HttpClient.create(url, {
             encoding: 'binary'
           }).get()(function(err, res, body) {
             if (err) {
-              errorHandler(err);
+              messageHandler(err);
               return;
             }
             if (res.statusCode !== 200) {
-              errorHandler("Bad HTTP response: " + res.statusCode);
+              messageHandler("Bad HTTP response: " + res.statusCode);
               return;
             }
-            return _this.write(body, url, errorHandler, function(path) {
+            return _this.write(body, url, messageHandler, function(path) {
               _this.cache.date = new Date();
               _this.cache.path = path;
-              errorHandler("Saved as " + path);
+              messageHandler("Saved as " + path);
               return callback(path);
             });
           });
